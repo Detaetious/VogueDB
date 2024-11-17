@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">s
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>Login Page</title>
+    <style>
+        body {
+            background-image: url('bg.png');
+            background-size: auto;
+            background-repeat: no-repeat;
+            background-position: center;
+            font-family: "Courier New", Courier, monospace;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        .voguedb {
+            text-align: center;
+            font-size: 100px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #16ffbd, #bdc4da, #32cd32);
+            background-size: 400% 400%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: gradient 7s ease infinite;
+            
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .login-box {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #000;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #000;
+            font-size: 14px;
+            border-radius: 2px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.6s ease; /* Transition for background-color */
+            border-radius: 2px;
+        }
+        input[type="submit"]:hover {
+            
+            background-color: #1c5b9a;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="voguedb">VogueDB</h1>
+    <div class="login-box">
+        <h1>Secure Login</h1>
+        <form id="login-form">        
+            <input type="password" id="password" name="password" placeholder="Enter Login Key..." required>
+            <input type="submit" value="Login">
+        </form>
+        <div id="error-message" class="error"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('login-form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = "User";
+            const password = document.getElementById('password').value;
+    
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
+    
+            const result = await response.json();
+            const errorDiv = document.getElementById('error-message');
+            if (response.ok) {
+                window.location.href = result.redirect; // Redirect to the protected page
+            } else {
+                errorDiv.textContent = result.error || 'Login failed!';
+            }
+        });
+    </script>    
+</body>
+</html>
